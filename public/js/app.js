@@ -3696,6 +3696,37 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(36);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3713,10 +3744,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
+  data: function data() {
+    return {
+      upc_ean_isbn: '',
+      item_name: '',
+      size: '',
+      description: '',
+      cost_price: '',
+      selling_price: '',
+      quantity: ''
+    };
+  },
+
+  methods: {
+    onSubmitted: function onSubmitted() {
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post("http://tutashop-srv.dev/api/item", {
+        upc_ean_isbn: this.upc_ean_isbn,
+        item_name: this.item_name,
+        size: this.size,
+        description: this.description,
+        cost_price: this.cost_price,
+        selling_price: this.selling_price,
+        quantity: this.quantity
+      }).then(function (response) {
+        return console.log(response);
+      }).catch(function (error) {
+        return console.log(error);
+      });
     }
+  }
 });
 
 /***/ }),
@@ -3724,8 +3782,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "container-fluid"
   }, [_c('div', {
@@ -3738,8 +3794,214 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-heading"
   }, [_vm._v("Items")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
-  }, [_c('h4', [_vm._v("I am Page Items !")])])])])])])
-}]}
+  }, [_c('form', {
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.onSubmitted($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "upc_ean_isbn"
+    }
+  }, [_vm._v("UPC/EAN/ISBN")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.upc_ean_isbn),
+      expression: "upc_ean_isbn"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "upc_ean_isbn",
+      "placeholder": "UPC/EAN/ISBN"
+    },
+    domProps: {
+      "value": (_vm.upc_ean_isbn)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.upc_ean_isbn = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "item_name"
+    }
+  }, [_vm._v("Item Name *")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.item_name),
+      expression: "item_name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "item_name",
+      "placeholder": "Item Name"
+    },
+    domProps: {
+      "value": (_vm.item_name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.item_name = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "size"
+    }
+  }, [_vm._v("Size")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.size),
+      expression: "size"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "size",
+      "placeholder": "Size"
+    },
+    domProps: {
+      "value": (_vm.size)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.size = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "description"
+    }
+  }, [_vm._v("Description")]), _vm._v(" "), _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.description),
+      expression: "description"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "rows": "3"
+    },
+    domProps: {
+      "value": (_vm.description)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.description = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "cost_price"
+    }
+  }, [_vm._v("Cost Price *")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.cost_price),
+      expression: "cost_price"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "cost_price",
+      "placeholder": "Cost Price"
+    },
+    domProps: {
+      "value": (_vm.cost_price)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.cost_price = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "selling_price"
+    }
+  }, [_vm._v("Selling Price *")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.selling_price),
+      expression: "selling_price"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "selling_price",
+      "placeholder": "Selling Price"
+    },
+    domProps: {
+      "value": (_vm.selling_price)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.selling_price = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "quantity"
+    }
+  }, [_vm._v("Quantity")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.quantity),
+      expression: "quantity"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text",
+      "id": "quantity",
+      "placeholder": "Quantity"
+    },
+    domProps: {
+      "value": (_vm.quantity)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.quantity = $event.target.value
+      }
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-default",
+    attrs: {
+      "type": "submit"
+    }
+  }, [_vm._v("Submit")])])])])])])])
+},staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()

@@ -9,9 +9,9 @@
                 <span class="icon-bar"></span>
             </button>
             <!-- Branding Image -->
-            <a class="navbar-brand" href="{{ url('/') }}">
+            <router-link to="/"><a class="navbar-brand">
                 {{ config('app.name', 'Laravel') }}
-            </a>
+            </a></router-link>
         </div>
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
             <!-- Left Side Of Navbar -->

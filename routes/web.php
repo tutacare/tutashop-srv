@@ -11,9 +11,13 @@
 |
 */
 
-Route::get('/', function () {
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('{path}', function () {
     return view('welcome');
-});
+})->where( 'path', '[\/\w\.-]*' );
 
 Auth::routes();
 
