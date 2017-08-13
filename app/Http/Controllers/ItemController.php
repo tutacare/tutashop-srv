@@ -21,4 +21,10 @@ class ItemController extends Controller
 
       return response()->json(['item' => $item], 201);
     }
+
+    public function getItem()
+    {
+    	$item = Item::all();
+    	return response()->json(['item' => $item], 200);
+    }
 }

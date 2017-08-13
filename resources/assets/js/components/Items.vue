@@ -40,6 +40,35 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="panel panel-default">
+            <div class="panel-heading">Items</div>
+              <div class="panel-body">
+                <!-- table -->
+                <table class="table">
+                  <tr>
+                    <th>UPC/EAN/ISBN</th>
+                    <th>Item Name</th>
+                    <th>Size</th>
+                    <th>Cost Price</th>
+                    <th>Selling Price</th>
+                    <th>Quantity</th>
+                  </tr>
+                  <tr v-for="item in results">
+                    <td>{{item.upc_ean_isbn}}</td>
+                    <td>{{item.item_name}}</td>
+                    <td>{{item.size}}</td>
+                    <td>{{item.cost_price}}</td>
+                    <td>{{item.selling_price}}</td>
+                    <td>{{item.quantity}}</td>
+                  </tr>
+                </table>
+                <!-- .end table -->
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
 </template>
 
@@ -54,10 +83,20 @@ import axios from 'axios';
             description: '',
             cost_price: '',
             selling_price: '',
-            quantity: ''
+            quantity: '',
+            results: []
           }
         },
         methods: {
+          getItem() {
+            axios.get("http://tutashop-srv.dev/api/item")
+            .then(
+              response => {this.results = response.data.item},  
+              )
+            .catch(e => {
+            this.errors.push(e)
+            });
+          },
           onSubmitted() {
             axios.post("http://tutashop-srv.dev/api/item", {
               upc_ean_isbn: this.upc_ean_isbn,
@@ -69,12 +108,19 @@ import axios from 'axios';
               quantity: this.quantity
             })
             .then(
-              (response) => console.log(response)
+              (response => {
+                console.log(response),
+                this.getUser()
+              })
               )
             .catch(
               (error) => console.log(error)
               );
           }
+          
+        },
+        mounted() {
+          this.getItem()
         }
     }
 </script>
