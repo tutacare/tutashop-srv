@@ -27,4 +27,30 @@ class ItemController extends Controller
     	$item = Item::all();
     	return response()->json(['item' => $item], 200);
     }
+
+    public function showItem($id)
+    {
+      $item = Item::findOrFail($id);
+      return response()->json(['item' => $item], 200);
+    }
+
+    public function editItem(Request $request, $id)
+    {
+      $item = Item::findOrFail($id);
+      $item->upc_ean_isbn = $request->upc_ean_isbn;
+      $item->item_name = $request->item_name;
+      $item->size = $request->size;
+      $item->description = $request->description;
+      $item->cost_price = $request->cost_price;
+      $item->selling_price = $request->selling_price;
+      $item->quantity = $request->quantity;
+      $item->save();
+
+      return response()->json(['item' => $item], 200);
+    }
+
+    public function deleteItem($id)
+    {
+      return Item::destroy($id);
+    }
 }
