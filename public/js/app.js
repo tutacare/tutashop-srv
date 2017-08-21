@@ -3786,43 +3786,86 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      id: '',
-      upc_ean_isbn: '',
-      item_name: '',
-      size: '',
-      description: '',
-      cost_price: '',
-      selling_price: '',
-      quantity: '',
+      item: {
+        id: '',
+        upc_ean_isbn: '',
+        item_name: '',
+        size: '',
+        description: '',
+        cost_price: '',
+        selling_price: '',
+        quantity: '',
+        avatar: ''
+      },
       results: [],
       edit: false
     };
   },
 
   methods: {
-    clearForm: function clearForm() {
-      this.upc_ean_isbn = '', this.item_name = '', this.size = '', this.description = '', this.cost_price = '', this.selling_price = '', this.quantity = '';
-    },
-    getItem: function getItem() {
+    avatarChange: function avatarChange(e) {
       var _this = this;
 
+      //console.log(e.target.files[0])
+      var fileReader = new FileReader();
+      fileReader.readAsDataURL(e.target.files[0]);
+      fileReader.onload = function (e) {
+        _this.item.avatar = e.target.result;
+      };
+      //console.log(this.item)
+    },
+    clearForm: function clearForm() {
+      this.item = {
+        upc_ean_isbn: '',
+        item_name: '',
+        size: '',
+        description: '',
+        cost_price: '',
+        selling_price: '',
+        quantity: ''
+      };
+    },
+    getItem: function getItem() {
+      var _this2 = this;
+
       __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get("/api/item").then(function (response) {
-        _this.results = response.data.item;
+        _this2.results = response.data.item;
       }).catch(function (e) {
-        _this.errors.push(e);
+        _this2.errors.push(e);
       });
     },
     showItem: function showItem(id) {
-      var _this2 = this;
+      var _this3 = this;
 
+      $('.collapse').collapse('show');
       this.edit = true;
       __WEBPACK_IMPORTED_MODULE_0_axios___default.a.get("/api/item/" + id).then(function (response) {
-        _this2.id = response.data.item.id, _this2.upc_ean_isbn = response.data.item.upc_ean_isbn, _this2.item_name = response.data.item.item_name, _this2.size = response.data.item.size, _this2.description = response.data.item.description, _this2.cost_price = response.data.item.cost_price, _this2.selling_price = response.data.item.selling_price, _this2.quantity = response.data.item.quantity;
+        _this3.item = response.data.item;
       }).catch(function (e) {
         (function (error) {
           return console.log(error);
@@ -3830,45 +3873,31 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       });
     },
     editItem: function editItem(id) {
-      var _this3 = this;
+      var _this4 = this;
 
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put("/api/item/" + id, {
-        upc_ean_isbn: this.upc_ean_isbn,
-        item_name: this.item_name,
-        size: this.size,
-        description: this.description,
-        cost_price: this.cost_price,
-        selling_price: this.selling_price,
-        quantity: this.quantity
-      }).then(function (response) {
-        _this3.clearForm(), _this3.getItem(), _this3.edit = false;
+      var item = this.item;
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.put("/api/item/" + id, item).then(function (response) {
+        _this4.clearForm(), _this4.getItem(), _this4.edit = false;
       }).catch(function (error) {
         return console.log(error);
       });
     },
     removeItem: function removeItem(id) {
-      var _this4 = this;
+      var _this5 = this;
 
       var confirmBox = confirm("Are you sure want remove?");
       if (confirmBox) __WEBPACK_IMPORTED_MODULE_0_axios___default.a.delete("/api/item/" + id).then(function (response) {
-        _this4.getItem();
+        _this5.getItem();
       }).catch(function (error) {
         return console.log(error);
       });
     },
     addItem: function addItem() {
-      var _this5 = this;
+      var _this6 = this;
 
-      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post("/api/item", {
-        upc_ean_isbn: this.upc_ean_isbn,
-        item_name: this.item_name,
-        size: this.size,
-        description: this.description,
-        cost_price: this.cost_price,
-        selling_price: this.selling_price,
-        quantity: this.quantity
-      }).then(function (response) {
-        _this5.clearForm(), _this5.getItem();
+      var item = this.item;
+      __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post("/api/item", item).then(function (response) {
+        _this6.clearForm(), _this6.getItem();
       }).catch(function (error) {
         return console.log(error);
       });
@@ -4950,9 +4979,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "col-md-12"
   }, [_c('div', {
     staticClass: "panel panel-default"
+  }, [_vm._m(0), _vm._v(" "), _c('div', {
+    staticClass: "panel-collapse collapse",
+    attrs: {
+      "id": "collapseTwo",
+      "role": "tabpanel",
+      "aria-labelledby": "headingTwo"
+    }
   }, [_c('div', {
-    staticClass: "panel-heading"
-  }, [_vm._v("Items")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body"
   }, [_c('form', {
     on: {
@@ -4961,6 +4995,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.addItem($event)
       }
     }
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6"
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
@@ -4971,8 +5009,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.upc_ean_isbn),
-      expression: "upc_ean_isbn"
+      value: (_vm.item.upc_ean_isbn),
+      expression: "item.upc_ean_isbn"
     }],
     staticClass: "form-control",
     attrs: {
@@ -4981,12 +5019,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "UPC/EAN/ISBN"
     },
     domProps: {
-      "value": (_vm.upc_ean_isbn)
+      "value": (_vm.item.upc_ean_isbn)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.upc_ean_isbn = $event.target.value
+        _vm.item.upc_ean_isbn = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('div', {
@@ -4999,8 +5037,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.item_name),
-      expression: "item_name"
+      value: (_vm.item.item_name),
+      expression: "item.item_name"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5009,12 +5047,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "Item Name"
     },
     domProps: {
-      "value": (_vm.item_name)
+      "value": (_vm.item.item_name)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.item_name = $event.target.value
+        _vm.item.item_name = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('div', {
@@ -5027,8 +5065,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.size),
-      expression: "size"
+      value: (_vm.item.size),
+      expression: "item.size"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5037,12 +5075,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "Size"
     },
     domProps: {
-      "value": (_vm.size)
+      "value": (_vm.item.size)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.size = $event.target.value
+        _vm.item.size = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('div', {
@@ -5055,23 +5093,25 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.description),
-      expression: "description"
+      value: (_vm.item.description),
+      expression: "item.description"
     }],
     staticClass: "form-control",
     attrs: {
       "rows": "3"
     },
     domProps: {
-      "value": (_vm.description)
+      "value": (_vm.item.description)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.description = $event.target.value
+        _vm.item.description = $event.target.value
       }
     }
-  })]), _vm._v(" "), _c('div', {
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
     attrs: {
@@ -5081,8 +5121,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.cost_price),
-      expression: "cost_price"
+      value: (_vm.item.cost_price),
+      expression: "item.cost_price"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5091,12 +5131,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "Cost Price"
     },
     domProps: {
-      "value": (_vm.cost_price)
+      "value": (_vm.item.cost_price)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.cost_price = $event.target.value
+        _vm.item.cost_price = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('div', {
@@ -5109,8 +5149,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.selling_price),
-      expression: "selling_price"
+      value: (_vm.item.selling_price),
+      expression: "item.selling_price"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5119,12 +5159,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "Selling Price"
     },
     domProps: {
-      "value": (_vm.selling_price)
+      "value": (_vm.item.selling_price)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.selling_price = $event.target.value
+        _vm.item.selling_price = $event.target.value
       }
     }
   })]), _vm._v(" "), _c('div', {
@@ -5137,8 +5177,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: (_vm.quantity),
-      expression: "quantity"
+      value: (_vm.item.quantity),
+      expression: "item.quantity"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5147,27 +5187,41 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "placeholder": "Quantity"
     },
     domProps: {
-      "value": (_vm.quantity)
+      "value": (_vm.item.quantity)
     },
     on: {
       "input": function($event) {
         if ($event.target.composing) { return; }
-        _vm.quantity = $event.target.value
+        _vm.item.quantity = $event.target.value
       }
     }
-  })]), _vm._v(" "), (!_vm.edit) ? _c('button', {
-    staticClass: "btn btn-default",
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    attrs: {
+      "for": "avatar"
+    }
+  }, [_vm._v("Avatar")]), _vm._v(" "), _c('input', {
+    staticClass: "form-control",
+    attrs: {
+      "type": "file"
+    },
+    on: {
+      "change": _vm.avatarChange
+    }
+  })])])]), _vm._v(" "), (!_vm.edit) ? _c('button', {
+    staticClass: "btn btn-primary",
     attrs: {
       "type": "submit"
     }
   }, [_vm._v("Add New Item")]) : _vm._e()]), _vm._v(" "), (_vm.edit) ? _c('button', {
-    staticClass: "btn btn-default",
+    staticClass: "btn btn-warning",
     on: {
       "click": function($event) {
-        _vm.editItem(_vm.id)
+        _vm.editItem(_vm.item.id)
       }
     }
-  }, [_vm._v("Edit Item")]) : _vm._e()])])])]), _vm._v(" "), _c('div', {
+  }, [_vm._v("Edit Item")]) : _vm._e()])])])])]), _vm._v(" "), _c('div', {
     staticClass: "row"
   }, [_c('div', {
     staticClass: "col-md-12"
@@ -5179,8 +5233,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "panel-body"
   }, [_c('table', {
     staticClass: "table table-striped"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.results), function(item) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(item.upc_ean_isbn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.item_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.size))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.cost_price))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.selling_price))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.quantity))]), _vm._v(" "), _c('td', [_c('button', {
+  }, [_vm._m(1), _vm._v(" "), _c('tbody', _vm._l((_vm.results), function(item) {
+    return _c('tr', [_c('td', [_vm._v(_vm._s(item.upc_ean_isbn))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.item_name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.size))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.cost_price))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.selling_price))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(item.quantity))]), _vm._v(" "), _c('td', [_c('img', {
+      attrs: {
+        "src": '/img/items/' + item.avatar,
+        "width": "100px"
+      }
+    })]), _vm._v(" "), _c('td', [_c('button', {
       staticClass: "btn btn-default",
       on: {
         "click": function($event) {
@@ -5197,7 +5256,27 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }, [_vm._v("Remove")])])])
   }))])])])])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('th', [_vm._v("UPC/EAN/ISBN")]), _vm._v(" "), _c('th', [_vm._v("Item Name")]), _vm._v(" "), _c('th', [_vm._v("Size")]), _vm._v(" "), _c('th', [_vm._v("Cost Price")]), _vm._v(" "), _c('th', [_vm._v("Selling Price")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Action")])])
+  return _c('div', {
+    staticClass: "panel-heading",
+    attrs: {
+      "role": "tab",
+      "id": "headingTwo"
+    }
+  }, [_c('h4', {
+    staticClass: "panel-title"
+  }, [_c('a', {
+    staticClass: "collapsed",
+    attrs: {
+      "role": "button",
+      "data-toggle": "collapse",
+      "data-parent": "#accordion",
+      "href": "#collapseTwo",
+      "aria-expanded": "false",
+      "aria-controls": "collapseTwo"
+    }
+  }, [_vm._v("\n                      #Item Form\n                    ")])])])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('thead', [_c('th', [_vm._v("UPC/EAN/ISBN")]), _vm._v(" "), _c('th', [_vm._v("Item Name")]), _vm._v(" "), _c('th', [_vm._v("Size")]), _vm._v(" "), _c('th', [_vm._v("Cost Price")]), _vm._v(" "), _c('th', [_vm._v("Selling Price")]), _vm._v(" "), _c('th', [_vm._v("Quantity")]), _vm._v(" "), _c('th', [_vm._v("Avatar")]), _vm._v(" "), _c('th', [_vm._v("Action")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {

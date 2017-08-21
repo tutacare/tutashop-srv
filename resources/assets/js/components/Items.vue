@@ -3,40 +3,58 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Items</div>
+                    <div class="panel-heading" role="tab" id="headingTwo">
+                      <h4 class="panel-title">
+                       <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                          #Item Form
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="panel-body">
                         <form @submit.prevent="addItem">
+                        <div class="row">
+                        <div class="col-md-6">
                           <div class="form-group">
                             <label for="upc_ean_isbn">UPC/EAN/ISBN</label>
-                            <input type="text" v-model="upc_ean_isbn" class="form-control" id="upc_ean_isbn" placeholder="UPC/EAN/ISBN">
+                            <input type="text" v-model="item.upc_ean_isbn" class="form-control" id="upc_ean_isbn" placeholder="UPC/EAN/ISBN">
                           </div>
                           <div class="form-group">
                             <label for="item_name">Item Name *</label>
-                            <input type="text" v-model="item_name" class="form-control" id="item_name" placeholder="Item Name">
+                            <input type="text" v-model="item.item_name" class="form-control" id="item_name" placeholder="Item Name">
                           </div>
                           <div class="form-group">
                             <label for="size">Size</label>
-                            <input type="text" v-model="size" class="form-control" id="size" placeholder="Size">
+                            <input type="text" v-model="item.size" class="form-control" id="size" placeholder="Size">
                           </div>
                           <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea v-model="description" class="form-control" rows="3"></textarea>
+                            <textarea v-model="item.description" class="form-control" rows="3"></textarea>
                           </div>
+                          </div>
+                        <div class="col-md-6">
                           <div class="form-group">
                             <label for="cost_price">Cost Price *</label>
-                            <input type="text" v-model="cost_price" class="form-control" id="cost_price" placeholder="Cost Price">
+                            <input type="text" v-model="item.cost_price" class="form-control" id="cost_price" placeholder="Cost Price">
                           </div>
                           <div class="form-group">
                             <label for="selling_price">Selling Price *</label>
-                            <input type="text" v-model="selling_price" class="form-control" id="selling_price" placeholder="Selling Price">
+                            <input type="text" v-model="item.selling_price" class="form-control" id="selling_price" placeholder="Selling Price">
                           </div>
                           <div class="form-group">
                             <label for="quantity">Quantity</label>
-                            <input type="text" v-model="quantity" class="form-control" id="quantity" placeholder="Quantity">
+                            <input type="text" v-model="item.quantity" class="form-control" id="quantity" placeholder="Quantity">
                           </div>
-                          <button type="submit" class="btn btn-default" v-if="!edit">Add New Item</button>
+                          <div class="form-group">
+                            <label for="avatar">Avatar</label>
+                            <input type="file" class="form-control" @change="avatarChange">
+                          </div>
+                          </div>
+                          </div>
+                          <button type="submit" class="btn btn-primary" v-if="!edit">Add New Item</button>
                         </form>
-                        <button class="btn btn-default" v-if="edit" @click="editItem(id)">Edit Item</button>
+                        <button class="btn btn-warning" v-if="edit" @click="editItem(item.id)">Edit Item</button>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -55,6 +73,7 @@
                     <th>Cost Price</th>
                     <th>Selling Price</th>
                     <th>Quantity</th>
+                    <th>Avatar</th>
                     <th>Action</th>
                   </thead>
                   <tbody>
@@ -65,6 +84,7 @@
                     <td>{{item.cost_price}}</td>
                     <td>{{item.selling_price}}</td>
                     <td>{{item.quantity}}</td>
+                    <td><img :src="'/img/items/' + item.avatar" width="100px"></td>
                     <td>
                       <button class="btn btn-default" @click="showItem(item.id)">Edit</button>
                       <button class="btn btn-danger" @click="removeItem(item.id)">Remove</button>
@@ -85,27 +105,41 @@ import axios from 'axios';
     export default {
         data () {
           return {
-            id: '',
-            upc_ean_isbn: '',
-            item_name: '',
-            size: '',
-            description: '',
-            cost_price: '',
-            selling_price: '',
-            quantity: '',
+            item: {
+              id: '',
+              upc_ean_isbn: '',
+              item_name: '',
+              size: '',
+              description: '',
+              cost_price: '',
+              selling_price: '',
+              quantity: '',
+              avatar: ''
+            },
             results: [],
             edit: false
           }
         },
         methods: {
+          avatarChange(e) {
+            //console.log(e.target.files[0])
+            var fileReader = new FileReader()
+            fileReader.readAsDataURL(e.target.files[0])
+            fileReader.onload = (e) => {
+              this.item.avatar = e.target.result
+            }
+            //console.log(this.item)
+          },
           clearForm() {
-            this.upc_ean_isbn = '',
-            this.item_name = '',
-            this.size = '',
-            this.description = '',
-            this.cost_price = '',
-            this.selling_price = '',
-            this.quantity = ''
+            this.item = {
+              upc_ean_isbn: '',
+              item_name: '',
+              size: '',
+              description: '',
+              cost_price: '',
+              selling_price: '',
+              quantity: ''
+            }
           },
           getItem() {
             axios.get("/api/item")
@@ -117,18 +151,12 @@ import axios from 'axios';
             });
           },
           showItem(id) {
+            $('.collapse').collapse('show')
             this.edit = true
             axios.get("/api/item/" + id)
             .then(
               response => {
-                this.id = response.data.item.id,
-                this.upc_ean_isbn = response.data.item.upc_ean_isbn,
-                this.item_name = response.data.item.item_name,
-                this.size = response.data.item.size,
-                this.description = response.data.item.description,
-                this.cost_price = response.data.item.cost_price,
-                this.selling_price = response.data.item.selling_price,
-                this.quantity = response.data.item.quantity
+                this.item = response.data.item
               },  
               )
             .catch(e => {
@@ -136,15 +164,8 @@ import axios from 'axios';
             });
           },
           editItem(id) {
-            axios.put("/api/item/" + id, {
-              upc_ean_isbn: this.upc_ean_isbn,
-              item_name: this.item_name,
-              size: this.size,
-              description: this.description,
-              cost_price: this.cost_price,
-              selling_price: this.selling_price,
-              quantity: this.quantity
-            })
+            const item = this.item
+            axios.put("/api/item/" + id, item)
             .then(
               (response => {
                 this.clearForm(),
@@ -170,15 +191,8 @@ import axios from 'axios';
               );
           },
           addItem() {
-            axios.post("/api/item", {
-              upc_ean_isbn: this.upc_ean_isbn,
-              item_name: this.item_name,
-              size: this.size,
-              description: this.description,
-              cost_price: this.cost_price,
-              selling_price: this.selling_price,
-              quantity: this.quantity
-            })
+            const item = this.item
+            axios.post("/api/item", item)
             .then(
               (response => {
                 this.clearForm(),
@@ -189,7 +203,6 @@ import axios from 'axios';
               (error) => console.log(error)
               );
           }
-          
         },
         mounted() {
           this.getItem()

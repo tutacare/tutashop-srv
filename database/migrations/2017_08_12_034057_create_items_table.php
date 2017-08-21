@@ -22,6 +22,7 @@ class CreateItemsTable extends Migration
             $table->decimal('cost_price',9, 2);
             $table->decimal('selling_price',9, 2);
             $table->integer('quantity');
+            $table->string('avatar', 100)->default('no-foto.png');
             $table->timestamps();
         });
     }
