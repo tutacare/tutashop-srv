@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Item;
+//use JWTAuth;
 
 class ItemController extends Controller
 {
     public function postItem(Request $request)
     {
       //\Log::info($request->all());
+      // if(!$user = JWTAuth::parseToken()->authenticate()) {
+      //   return response()->json([
+      //     'mesage' => 'Page not found'
+      //     ], 404);
+      // }
+      //$user = JWTAuth::parseToken()->toUser();
       $exploded = explode(',', $request->avatar);
       $decoded = base64_decode($exploded[1]);
       if(str_contains($exploded[0], 'jpeg'))
@@ -34,7 +41,7 @@ class ItemController extends Controller
       $item->avatar = $fileName;
       $item->save();
 
-      //return response()->json(['item' => $item], 201);
+      //return response()->json(['item' => $item, 'user' => $user], 201);
     }
 
     public function getItem()

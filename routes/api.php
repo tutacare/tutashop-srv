@@ -13,14 +13,19 @@ use Illuminate\Http\Request;
 |
 */
 
-//route items
-Route::post('/item', 'ItemController@postItem');
-Route::get('/item', 'ItemController@getItem');
-Route::get('/item/{id}', 'ItemController@showItem');
-Route::put('/item/{id}', 'ItemController@editItem');
-Route::delete('/item/{id}', 'ItemController@deleteItem');
-
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+//route items with auth.jwt
+Route::group(['middleware' => ['auth.jwt']], function () {
+	Route::post('/item', 'ItemController@postItem');
+	Route::get('/item/{id}', 'ItemController@showItem');
+	Route::put('/item/{id}', 'ItemController@editItem');
+	Route::delete('/item/{id}', 'ItemController@deleteItem');
 });
+Route::get('/item', 'ItemController@getItem');
+
+//route signin
+Route::post('user/signin', 'UserController@signin');
+
+
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });

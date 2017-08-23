@@ -3,6 +3,14 @@ import VueRouter from 'vue-router'
 let routes=[
 {
 	path:'/',
+	component:require('./components/Main')
+},
+{
+	path:'/login',
+	component:require('./components/Login')
+},
+{
+	path:'/dashboard',
 	component:require('./components/Dashboard')
 },
 {
@@ -11,7 +19,8 @@ let routes=[
 },
 {
 	path:'/items',
-	component:require('./components/Items')
+	component:require('./components/Items'),
+	//meta: { requiresAuth: true }
 },
 {
 	path:'/suppliers',
@@ -31,4 +40,4 @@ let routes=[
 export default new VueRouter({
 	routes,
 	mode: 'history'
-})
+});

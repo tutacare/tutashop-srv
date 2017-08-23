@@ -159,9 +159,9 @@ import axios from 'axios';
                 this.item = response.data.item
               },  
               )
-            .catch(e => {
-            (error) => console.log(error)
-            });
+            .catch(
+              (error) => console.log(error)
+              );
           },
           editItem(id) {
             const item = this.item

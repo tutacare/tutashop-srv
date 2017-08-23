@@ -21,12 +21,16 @@
             <!-- Right Side Of Navbar -->
             <ul class="nav navbar-nav navbar-right">
                 <!-- Authentication Links -->
-                    <router-link to="/" tag="li"><a>Dashboard</a></router-link>
+
+                    <router-link to="/login" tag="li"><a>LOGIN</a></router-link>
+
+                    <router-link to="/dashboard" tag="li"><a>Dashboard</a></router-link>
                     <router-link to="/customers" tag="li"><a>Customers</a></router-link>
                     <router-link to="/items" tag="li"><a>Items</a></router-link>
                     <router-link to="/suppliers" tag="li"><a>Suppliers</a></router-link>
                     <router-link to="/receivings" tag="li"><a>Receivings</a></router-link>
                     <router-link to="/sales" tag="li"><a>Sales</a></router-link>
+
             </ul>
         </div>
     </div>
